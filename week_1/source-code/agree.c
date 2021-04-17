@@ -1,21 +1,20 @@
+// Logical operators
+
+#include <cs50.h>
 #include <stdio.h>
-// Only works on CS5 IDE
-//#include <cs50.h>
 
 int main(void)
 {
-    char c = 0;
+    // Prompt user to agree
+    char c = get_char("Do you agree? ");
 
-    /* Get a char from user */
-    c = get_char("Do you agree?  ");
-    if(c == 'y' || c == 'Y')
+    // Check whether agreed
+    if (c == 'Y' || c == 'y')
     {
-        printf("Agreed.");
+        printf("Agreed.\n");
     }
-    else
+    else if (c == 'N' || c == 'n')
     {
-        printf("Not agreed.");
+        printf("Not agreed.\n");
     }
-    puts("");
-    return 0;
 }

@@ -1,27 +1,27 @@
+// Conditions and relational operators
+
+#include <cs50.h>
 #include <stdio.h>
-// Only works on CS5 IDE
-//#include <cs50.h>
 
 int main(void)
 {
-    int x = 0, y = 0;
+    // Prompt user for x
+    int x = get_int("x: ");
 
-    /* Get numbers from user */
-    x = get_long("x: ");
-    y = get_long("y: ");
-    /* Compares x and y */
-    if(x > y)
+    // Prompt user for y
+    int y = get_int("y: ");
+
+    // Compare x and y
+    if (x < y)
     {
-        printf("x larger than y");
+        printf("x is less than y\n");
     }
-    else if (x < y)
+    else if (x > y)
     {
-      printf("x smaller than y");
+        printf("x is greater than y\n");
     }
     else
     {
-        printf("x and y are equal");
+        printf("x is equal to y\n");
     }
-    puts("");
-    return 0;
 }

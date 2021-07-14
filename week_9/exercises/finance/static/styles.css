@@ -1,0 +1,70 @@
+nav .navbar-brand
+{
+    /* size for brand */
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .blue
+{
+    color: #537fbe;
+}
+nav .navbar-brand .red
+{
+    color: #ea433b;
+}
+nav .navbar-brand .yellow
+{
+    color: #f5b82e;
+}
+nav .navbar-brand .green
+{
+    color: #2e944b;
+}
+
+main .form-control
+{
+    /* Center form controls */
+    display: inline-block;
+
+    /* Override Bootstrap's 100% width for form controls */
+    width: auto;
+}
+
+main
+{
+    /* Scroll horizontally as needed */
+    overflow-x: auto;
+
+    /* Center contents */
+    text-align: center;
+}
+
+main img
+{
+    /* Constrain images on small screens */
+    max-width: 100%;
+}
+
+/* Creates a custom title */
+.title {
+    margin: 20px 0;
+    font-size: 30px;
+    border-bottom: #000000;
+    border-width: 0 0 1.5px 0;
+    border-style: solid;
+    font-weight: lighter;
+}
+
+@media screen and (max-width: 600px) {
+    .title {
+        margin-top: 115px;
+    }
+}
+
+.error-message {
+    color: #FF0000;
+    font-style: italic;
+    font-size: small;
+    margin-top: 5px;
+}

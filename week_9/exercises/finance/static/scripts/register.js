@@ -1,27 +1,39 @@
+import {is_empty, is_valid_username, is_valid_password, is_confirmed_password} from "./validation.js";
 document.addEventListener("DOMContentLoaded", (e) => {
-    // Inputs and buttons
-   const username = document.getElementById("username");
-   const password = document.getElementById("password");
-   const confirmation = document.getElementById("confirmation");
-   const register_button = document.getElementById("register-button");
+    /// input:text where the user input its new username
+    const username = document.getElementById("username");
+   /// input:text where the user input its new password
+    const password = document.getElementById("password");
+   /// input:text where the user input the confirmation of its new password
+    const confirmation = document.getElementById("confirmation");
+   /// button:submit where the user clicks to send its information
+    const register_button = document.getElementById("register-button");
 
-    // Error messages
+    /// p tag used to show any error message refered to the username
     const username_error = document.getElementById("username_error");
+    /// p tag used to show any error message refered to the password
     const password_error = document.getElementById("password_error");
+    /// p tag used to show any error message refered to the confirmation password
     const confirmation_error = document.getElementById("confirmation_error");
 
-    // Event Listeners
+
     register_button.addEventListener("click", (e) => {
+        /// If something went wrong, the submit event is stopped
         if (!is_valid_data()) {
             e.preventDefault();
         }
     });
 
-    // Functions
-
+    /**
+     * Evaluates that each field requirements in the form are fulfilled and is true id that happens
+     * @return {bool}
+     */
     function is_valid_data() {
+        /// Get the cleaned value in the username field
         const username_value = username.value.trim();
+        /// Get the cleaned value in the password field
         const password_value = password.value.trim();
+        /// Get the cleaned value in the confirmation password field
         const confirmation_value = confirmation.value.trim();
 
         const valid_username = is_valid_username(username_value, username_error);
@@ -29,66 +41,5 @@ document.addEventListener("DOMContentLoaded", (e) => {
         const confirmed_password = is_confirmed_password(password_value, confirmation_value, confirmation_error);
 
         return valid_username && valid_password && confirmed_password ? true : false;
-    }
-
-    function is_empty(value) {
-        return !value.length ? true : false;
-    }
-
-    function is_valid_username(username_value, message_container) {
-        /*
-            Source: https://mkyong.com/regular-expressions/how-to-validate-username-with-regular-expression/
-            Username requirements:
-                - Username first character must be a letter [a-z]
-                - Username consists of alphanumeric characters (a-z0-9), lowercase, or uppercase.
-                - Username allowed of the dot (.), underscore (_), and hyphen (-).
-                - The dot (.), underscore (_), or hyphen (-) must not be the first or last character.
-                - The dot (.), underscore (_), or hyphen (-) does not appear consecutively, e.g., user..name
-                - The number of characters must be between 5 to 20.
-        */
-        const username_regex = /^[a-z]([._-](?![._-])|[a-z0-9]){3,18}[a-z0-9]$/gi;
-        if (is_empty(username_value))  {
-            message_container.innerHTML = "This field is required";
-            return;
-        } else if (!username_regex.test(username_value)) {
-            message_container.innerHTML = "Enter a valid username";
-            return false;
-        } else {
-            message_container.innerHTML = "";
-        }
-
-        return true;
-    }
-
-    function is_valid_password(password_value, message_container) {
-        /*
-            Password requirements:
-                - Password consists of alphanumeric characters (a-z0-9), lowercase, or uppercase.
-                - Username allowed special characters.
-                - The number of characters must be between 8 to 10.
-        */
-        const password_regex = /^[a-z0-9!"#\$%&'\(\)\*\+,-\.\/:;<=>\?@[\]\^_`\{\|}~]{8,10}$/gi;
-        if (is_empty(password_value))  {
-            message_container.innerHTML = "This field is required";
-            return;
-        } else if (!password_regex.test(password_value)) {
-            message_container.innerHTML = "Enter a valid password";
-            return false;
-        } else {
-            message_container.innerHTML = "";
-        }
-        return true;
-    }
-
-    function is_confirmed_password(password_value, confirmation_value, message_container) {
-        if (is_empty(confirmation_value, message_container)) {
-            message_container.innerHTML = "This field is required";
-            return false;
-        } else if (password_value != confirmation_value) {
-            message_container.innerHTML = "The password does not match this field";
-            return false;
-        }
-        message_container.innerHTML = "";
-        return true;
     }
 });

@@ -1,6 +1,5 @@
 import os
-import time
-
+import re
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -125,18 +124,46 @@ def register():
         return render_template("register.html")
     if request.method == "POST":
         username = request.form.get("username")
-        try:
-                username_row = db.execute("SELECT username FROM users where username = ?", username)
-                if len(username_row) == 0:
-                    password = generate_password_hash(request.form.get("password"))
-                    db.execute("INSERT INTO users(username, hash) VALUES (?,?)", username, password)
-                    return registered_username("Using C$50 Finance", "stonks")
-                else:
-                    return repeated_username("You", "Someone using the same username")
-        except ValueError as e:
-            return apology(e, 403)
-    return apology("Something went wrong", 500)
+        password = request.form.get("password")
+        confirmation_password = request.form.get("confirmation")
+        if username and password:
+            '''
+            Source: https://mkyong.com/regular-expressions/how-to-validate-username-with-regular-expression/
+            Username requirements:
+                - Username first character must be a letter [a-z]
+                - Username consists of alphanumeric characters (a-z0-9), lowercase, or uppercase.
+                - Username allowed of the dot (.), underscore (_), and hyphen (-).
+                - The dot (.), underscore (_), or hyphen (-) must not be the first or last character.
+                - The dot (.), underscore (_), or hyphen (-) does not appear consecutively, e.g., user..name
+                - The number of characters must be between 5 to 20.
+            '''
+            username_regex = "^[a-z]([._-](?![._-])|[a-z0-9]){3,18}[a-z0-9]$"
 
+            '''
+            Password requirements:
+                - Password consists of alphanumeric characters (a-z0-9), lowercase, or uppercase.
+                - The number of characters must be between 8 to 10.
+            '''
+            password_regex = "^[a-z0-9]{8,10}$"
+
+            if re.fullmatch(username_regex,  username, flags=re.IGNORECASE) and re.fullmatch(password_regex, password, flags=re.IGNORECASE):
+                if password == confirmation_password:
+                    # Get the a username with the given username if it exists
+                    username_row = db.execute("SELECT username FROM users where username = ?", username)
+                    if len(username_row) == 0:
+                        password = generate_password_hash(password)
+                        db.execute("INSERT INTO users(username, hash) VALUES (?,?)", username, password)
+                        return registered_username("Using C$50 Finance", "stonks")
+                    else:
+                        # Tell the user that the given user already exists
+                        return repeated_username("You", "Someone else using the same username")
+                else:
+                    return apology("must match password and confirmation password", 403)
+            else:
+                return apology("must provide a valid username and a valid password", 403)
+        else:
+            return apology("must provide username and password", 403)
+    return apology("Something went wrong", 500)
 
 @app.route("/sell", methods=["GET", "POST"])
 @login_required

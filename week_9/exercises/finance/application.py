@@ -72,24 +72,47 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
+        username = request.form.get("username")
+        password = request.form.get("password")
         # Ensure username was submitted
-        if not request.form.get("username"):
+        if not username:
             return apology("must provide username", 403)
 
         # Ensure password was submitted
-        elif not request.form.get("password"):
+        elif not password:
             return apology("must provide password", 403)
 
-        # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+        '''
+        Source: https://mkyong.com/regular-expressions/how-to-validate-username-with-regular-expression/
+        Username requirements:
+            - Username first character must be a letter [a-z]
+            - Username consists of alphanumeric characters (a-z0-9), lowercase, or uppercase.
+            - Username allowed of the dot (.), underscore (_), and hyphen (-).
+            - The dot (.), underscore (_), or hyphen (-) must not be the first or last character.
+            - The dot (.), underscore (_), or hyphen (-) does not appear consecutively, e.g., user..name
+            - The number of characters must be between 5 to 20.
+        '''
+        username_regex = "^[a-z]([._-](?![._-])|[a-z0-9]){3,18}[a-z0-9]$"
 
-        # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
-            return apology("invalid username and/or password", 403)
+        '''
+        Password requirements:
+            - Password consists of alphanumeric characters (a-z0-9), lowercase, or uppercase.
+            - The number of characters must be between 8 to 10.
+        '''
+        password_regex = "^[a-z0-9]{8,10}$"
 
-        # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        if re.fullmatch(username_regex,  username, flags=re.IGNORECASE) and re.fullmatch(password_regex, password, flags=re.IGNORECASE):
+            # Query database for username
+            rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+
+            # Ensure username exists and password is correct
+            if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+                return apology("invalid username and/or password", 403)
+
+            # Remember which user has logged in
+            session["user_id"] = rows[0]["id"]
+        else:
+            return apology("must provide a valid username and a valid password", 403)
 
         # Redirect user to home page
         return redirect("/")
@@ -97,7 +120,6 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
-
 
 @app.route("/logout")
 def logout():

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block scripts %}
+    <script type="module" src="./static/scripts/quote.js"></script>
+{% endblock %}
+
+{% block main %}
+    <p class="title animated bounceInLeft">Quote</p>
+    <div class="form-group">
+        <input autocomplete="off" autofocus class="form-control" name="symbol" placeholder="Symbol" id="symbol" type="text">
+    </div>
+    <div id="data-container" class="mt-3">
+        <p class="title animated bounceInLeft">Symbol data</p>
+        <label class="btn btn-primary w-75">Name</label>
+        <p id="name-container"></p>
+        <label class="btn btn-primary w-75">Price</label>
+        <p id="price-container"></p>
+        <label class="btn btn-primary w-75">Symbol</label>
+        <p id="symbol-container"><p>
+    </div>
+{% endblock %}

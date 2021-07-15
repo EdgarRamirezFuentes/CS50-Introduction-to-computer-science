@@ -1,5 +1,5 @@
 
-   /**
+    /**
     * Evaluates wether the value is empty or not. If the value is empty, returns true
     * @param {string} value is the value that will be evaluated
     * @return {bool} true if is empty, else false
@@ -30,7 +30,7 @@
         const username_regex = /^[a-z]([._-](?![._-])|[a-z0-9]){3,18}[a-z0-9]$/gi;
         if (is_empty(username_value))  {
             message_container.innerHTML = "This field is required";
-            return;
+            return false;
         } else if (!username_regex.test(username_value)) {
             message_container.innerHTML = "Enter a valid username";
             return false;
@@ -58,7 +58,7 @@
         const password_regex = /^[a-z0-9]{8,10}$/gi;
         if (is_empty(password_value))  {
             message_container.innerHTML = "This field is required";
-            return;
+            return false;
         } else if (!password_regex.test(password_value)) {
             message_container.innerHTML = "Enter a valid password";
             return false;

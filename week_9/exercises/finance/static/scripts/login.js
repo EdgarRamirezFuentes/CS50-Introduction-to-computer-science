@@ -1,4 +1,4 @@
-import {is_empty, is_valid_username, is_valid_password} from "./validation.js"
+import { is_empty } from "./validation.js"
 document.addEventListener("DOMContentLoaded", (e) => {
     /// input:text where the user input its new username
     const username = document.getElementById("username");
@@ -28,8 +28,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
         /// Get the cleaned value in the password field
         const password_value = password.value.trim();
 
-        const valid_username = is_valid_username(username_value, username_error);
-        const valid_password = is_valid_password(password_value, password_error);
+        const valid_username = !is_empty(username_value);
+        const valid_password = !is_empty(password_value);
+
+        if (!valid_username) username_error.innerHTML = "This field is required";
+        if (!valid_password) password_error.innerHTML = "This field is required";
 
         return valid_username && valid_password ? true : false;
     }

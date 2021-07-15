@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}
+
+{% block main %}
+    <p class="title animated bounceInLeft">Your stocks</p>
+    <div class="container">
+        <div class"row">
+            <div class="col-12 d-none d-lg-block">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Symbol</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Shares</th>
+                            <th scope="col">Total value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stock in stocks %}
+                            <tr>
+                                <th scope="row">{{ stock.symbol }}</th>
+                                <td>{{ stock.name }}</td>
+                                <td>${{ stock.price }}</td>
+                                <td>{{ stock.quantity }}</td>
+                                <td>${{ stock.quantity * stock.price }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-lg-none">
+                {% for stock in stocks %}
+                    <button class="btn btn-primary dropdown-toggle w-75 my-2" type="button" data-toggle="collapse" data-target="#{{ stock.symbol }}" aria-expanded="false" aria-controls="{{ stock.symbol }}">
+                        {{ stock.name }}
+                    </button>
+                    <div class="collapse" id="{{ stock.symbol }}">
+                        <div class="card card-body">
+                            <p class="border-bottom border-dark w-100">Symbol: {{ stock.symbol }}</p>
+                            <p class="border-bottom border-dark w-100">Price: ${{ stock.price }}</p>
+                            <p class="border-bottom border-dark w-100">Shares: {{ stock.quantity }}</p>
+                            <p>Total value: ${{ stock.quantity * stock.price }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <p class="title animated bounceInLeft">Your cash balance</p>
+    <div class="container">
+        <div class"row">
+            <div class="col-12">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Stocks' total value</th>
+                            <th scope="col">Grand total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td scope="row">${{ stock_total_value }}</th>
+                                <td>${{ stock_total_value + cash }}</td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

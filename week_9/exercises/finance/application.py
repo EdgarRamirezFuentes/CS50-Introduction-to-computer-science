@@ -1,7 +1,7 @@
 import os
 import re
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, redirect, render_template, request, session, jsonify
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
@@ -45,9 +45,25 @@ if not os.environ.get("API_KEY"):
 @app.route("/")
 @login_required
 def index():
-    """Show portfolio of stocks"""
-    return apology("TODO")
-
+    user_id = session["user_id"]
+    user_data = db.execute("SELECT username, cash FROM users WHERE id = (?);", user_id)
+    username = user_data[0]["username"]
+    cash = user_data[0]["cash"]
+    stocks = db.execute("SELECT stock_id, quantity FROM user_stocks WHERE user_id = (?) ORDER BY stock_id;", user_id)
+    stocks_information = []
+    stocks_total = 0
+    # The user has stocks
+    for stock in stocks:
+        stock_data = lookup(stock["stock_id"])
+        if stock_data:
+            stocks_information.append({
+                "symbol": stock["stock_id"],
+                "name" : stock_data["name"],
+                "price": stock_data["price"],
+                "quantity": stock["quantity"]
+            })
+            stocks_total += stock_data["price"] + stock["quantity"]
+    return render_template("index.html", username=username, stocks=stocks_information, stock_total_value=stocks_total, cash=cash)
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
@@ -117,7 +133,8 @@ def logout():
 def quote():
     """Get stock quote."""
     if request.method == "GET":
-        return render_template("quote.html")
+        username = db.execute("SELECT username FROM users WHERE id = (?)", session["user_id"])[0]["username"]
+        return render_template("quote.html", username=username)
     elif request.method == "POST":
         print(request.get_json(force=True))
         symbol = request.get_json(force=True)["symbol"]

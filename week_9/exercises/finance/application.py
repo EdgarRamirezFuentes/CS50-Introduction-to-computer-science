@@ -49,7 +49,7 @@ def index():
     user_data = db.execute("SELECT username, cash FROM users WHERE id = (?);", user_id)
     username = user_data[0]["username"]
     cash = user_data[0]["cash"]
-    stocks = db.execute("SELECT stock_id, quantity FROM user_stocks WHERE user_id = (?) ORDER BY stock_id;", user_id)
+    stocks = db.execute("SELECT stock_id, shares FROM user_stocks WHERE username_id = (?) ORDER BY stock_id;", user_id)
     stocks_information = []
     stocks_total = 0
     # The user has stocks
@@ -60,9 +60,9 @@ def index():
                 "symbol": stock["stock_id"],
                 "name" : stock_data["name"],
                 "price": stock_data["price"],
-                "quantity": stock["quantity"]
+                "quantity": stock["shares"]
             })
-            stocks_total += stock_data["price"] + stock["quantity"]
+            stocks_total += stock_data["price"] + stock["shares"]
     return render_template("index.html", username=username, stocks=stocks_information, stock_total_value=stocks_total, cash=cash)
 
 @app.route("/buy", methods=["GET", "POST"])

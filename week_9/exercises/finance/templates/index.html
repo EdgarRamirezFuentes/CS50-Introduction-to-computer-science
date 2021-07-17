@@ -44,9 +44,9 @@
                     <div class="collapse" id="{{ stock.symbol }}">
                         <div class="card card-body">
                             <p class="border-bottom border-dark w-100">Symbol: {{ stock.symbol }}</p>
-                            <p class="border-bottom border-dark w-100">Price: ${{ stock.price }}</p>
+                            <p class="border-bottom border-dark w-100">Price: ${{ "{:.2f}".format(stock.price) }}</p>
                             <p class="border-bottom border-dark w-100">Shares: {{ stock.quantity }}</p>
-                            <p>Total value: ${{ stock.quantity * stock.price }}</p>
+                            <p>Total value: ${{ "{:.2f}".format(stock.quantity * stock.price) }}</p>
                         </div>
                     </div>
                 {% endfor %}
@@ -61,13 +61,15 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">Stocks' total value</th>
+                            <th scope="col">Cash</th>
                             <th scope="col">Grand total</th>
                         </tr>
                     </thead>
                     <tbody>
                             <tr>
-                                <td scope="row">${{ stock_total_value }}</th>
-                                <td>${{ stock_total_value + cash }}</td>
+                                <td scope="row">${{ "{:.2f}".format(stock_total_value) }}</th>
+                                <td>${{ "{:.2f}".format(cash) }}</td>
+                                <td>${{ "{:.2f}".format(stock_total_value + cash) }}</td>
                             </tr>
                     </tbody>
                 </table>

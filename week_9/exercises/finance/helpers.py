@@ -27,6 +27,8 @@ def repeated_username(message1, message2):
 def registered_username(message1, message2):
     return render_template("registered_username.html", top=escape(message1), bottom=escape(message2))
 
+def shares_success(message1, message2=""):
+    return render_template("success.html", top=escape(message1), bottom=escape(message2))
 
 def login_required(f):
     """

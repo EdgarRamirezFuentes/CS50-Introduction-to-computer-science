@@ -88,4 +88,9 @@
         return true;
     }
 
-    export {is_empty, is_valid_username, is_valid_password, is_confirmed_password};
+    function is_valid_share(share_value) {
+        const share_regex = /^[0-9]{1,3}$/
+        return share_regex.test(share_value);
+    }
+
+    export {is_empty, is_valid_username, is_valid_password, is_confirmed_password, is_valid_share};

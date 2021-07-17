@@ -68,3 +68,8 @@ main img
     font-size: small;
     margin-top: 5px;
 }
+
+.shares-input {
+    width: 80px!important;
+    flex: 0 1 auto!important;
+}

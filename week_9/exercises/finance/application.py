@@ -7,7 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, repeated_username, registered_username, login_required, lookup, usd
+from helpers import apology, repeated_username, registered_username, login_required, shares_success, lookup, usd
 
 # Configure application
 app = Flask(__name__)
@@ -68,8 +68,65 @@ def index():
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
-    """Buy shares of stock"""
-    return apology("TODO")
+    if request.method == "GET":
+        user_data = db.execute("SELECT username, cash FROM users WHERE id = (?)", session["user_id"])
+        username = user_data[0]["username"]
+        cash = user_data[0]["cash"]
+        return render_template("buy.html", username=username, cash=cash)
+    if request.method == "POST":
+        user_id = session["user_id"]
+        cash = db.execute("SELECT cash FROM users WHERE id = (?)", user_id)[0]["cash"]
+
+        # User form input
+        stock_id = request.form.get("stock_id")
+        shares = request.form.get("shares")
+
+        # Look up the information about the symbol 
+        symbol_data = lookup(stock_id)
+        
+        # Ensures that the symbol belongs to a stock
+        if not symbol_data:
+            return apology("Enter a valid stock symbol", 503)
+
+        if not shares.isnumeric():
+            return apology("Enter a valid number of shares", 503)
+
+        # Ensures that the user don't buy more than 100 shares
+        if int(shares) > 100:
+            return apology("The max shares that you can purchase are 100", 503)
+
+        price = float(symbol_data["price"])
+
+        # Substracts the current total share price from the current cash
+        cash -= float(price * int(shares))
+
+        # Ensures that the user has enogh money to buy the shares
+        if (cash < 0):
+            return apology("You do not have enough money to buy these shares", 503)
+
+        # Checks if it is the user already owned shares of this stock
+        has_shares = db.execute("SELECT id, shares FROM user_stocks WHERE username_id = (?) AND stock_id = (?)", user_id, stock_id)
+
+        # Keeps track of the id from the user_stocks table that contains the user-stock relation in the DB
+        transaction_id = None
+
+
+        if has_shares:
+            transaction_id = has_shares[0]["id"]
+            # Adds the bought shares
+            new_shares = has_shares[0]["shares"] + int(shares)
+            # Update the total shares owned
+            db.execute("UPDATE user_stocks SET shares = (?) WHERE username_id = (?) AND stock_id = (?);", new_shares, user_id, stock_id)
+        else:
+            # Create a new row in the DB to keep track of the user-stock relation
+            transaction_id = db.execute("INSERT INTO user_stocks (username_id, stock_id, shares) VALUES(?,?,?)", user_id, stock_id, shares)
+
+        # Adds the new transaction in the user history
+        db.execute("INSERT INTO user_history (user_stocks_id, shares, price, transaction_type) VALUES (?,?,?,?)", transaction_id, shares, price, "buy")
+        # Update the current cash after the purchase
+        db.execute("UPDATE users SET cash = (?) WHERE id = (?)", cash, user_id)
+
+        return shares_success("Congrats!", f"You have owned {symbol_data['name']} shares successfully")
 
 
 @app.route("/history")

@@ -132,8 +132,10 @@ def buy():
 @app.route("/history")
 @login_required
 def history():
-    """Show history of transactions"""
-    return apology("TODO")
+    user_id = session["user_id"]
+    username = db.execute("SELECT username FROM users WHERE id = (?)", user_id)[0]["username"]
+    history = db.execute("SELECT stocks.stock_id AS stock_id, history.shares AS shares, history.price AS price, history.date AS date, history.transaction_type AS type FROM user_stocks as stocks INNER JOIN user_history AS history ON stocks.id = history.user_stocks_id WHERE stocks.username_id = (?) ORDER BY history.date, stocks.stock_id", user_id)
+    return render_template("history.html", history=history, username=username)
 
 
 @app.route("/login", methods=["GET", "POST"])

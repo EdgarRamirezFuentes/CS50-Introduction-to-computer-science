@@ -1,12 +1,17 @@
-import {is_empty, is_valid_username, is_valid_password, is_confirmed_password} from "./validation.js";
+import {
+    is_empty,
+    is_valid_username,
+    is_valid_password,
+    is_confirmed_password
+} from "./validation.js";
 document.addEventListener("DOMContentLoaded", (e) => {
     /// input:text where the user input its new username
     const username = document.getElementById("username");
-   /// input:text where the user input its new password
+    /// input:text where the user input its new password
     const password = document.getElementById("password");
-   /// input:text where the user input the confirmation of its new password
+    /// input:text where the user input the confirmation of its new password
     const confirmation = document.getElementById("confirmation");
-   /// button:submit where the user clicks to send its information
+    /// button:submit where the user clicks to send its information
     const register_button = document.getElementById("register-button");
 
     /// p tag used to show any error message refered to the username
@@ -25,7 +30,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     });
 
     /**
-     * Evaluates that each field requirements in the form are fulfilled and is true id that happens
+     * Evaluate that each field requirements in the form are fulfilled and is true id that happens
      * @return {bool}
      */
     function is_valid_data() {

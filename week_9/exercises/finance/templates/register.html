@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="./static/scripts/register.js"></script>
+    <script type="module" src="./static/scripts/register.js"></script>
 {% endblock %}
 
 {% block main %}
@@ -34,9 +34,8 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li class="dropdown-item">Password consists of alphanumeric characters (a-z0-9), lowercase, or uppercase.</li>
-                        <li class="dropdown-item">Username allowed special characters.</li>
                         <li class="dropdown-item">The number of characters must be between 8 to 10.</li>
-                     </ul>
+                    </ul>
                 </div>
             </div>
         </div>

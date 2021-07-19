@@ -1,4 +1,6 @@
-import { is_empty } from "./validation.js"
+import {
+    is_empty
+} from "./validation.js"
 document.addEventListener("DOMContentLoaded", (e) => {
     /// input:text where the user input its new username
     const username = document.getElementById("username");
@@ -19,7 +21,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     });
 
     /**
-     * Evaluates that each field requirements in the form are fulfilled and is true if that happens
+     * Evaluate that each field requirements in the form are fulfilled and is true if that happens
      * @return {bool}
      */
     function is_valid_data() {

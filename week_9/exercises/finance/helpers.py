@@ -17,18 +17,18 @@ def escape(s):
         s = s.replace(old, new)
     return s
 
-def apology(message, code=400):
-    return render_template("apology.html", top=code, bottom=escape(message)), code
+def apology(message, code=400, username=""):
+    return render_template("apology.html", top=code, bottom=escape(message), username=username), code
 
-def repeated_username(message1, message2):
-    return render_template("repeated_username.html", top=escape(message1), bottom=escape(message2))
+def repeated_username(message1, message2, username=""):
+    return render_template("repeated_username.html", top=escape(message1), bottom=escape(message2), username=username)
 
 
-def registered_username(message1, message2):
-    return render_template("registered_username.html", top=escape(message1), bottom=escape(message2))
+def registered_username(message1, message2, username=""):
+    return render_template("registered_username.html", top=escape(message1), bottom=escape(message2) , username=username)
 
-def shares_success(message1, message2=""):
-    return render_template("success.html", top=escape(message1), bottom=escape(message2))
+def success(message1, message2="", username=""):
+    return render_template("success.html", top=escape(message1), bottom=escape(message2), username=username)
 
 def login_required(f):
     """

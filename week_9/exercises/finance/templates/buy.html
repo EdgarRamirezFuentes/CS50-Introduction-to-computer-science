@@ -15,15 +15,16 @@
         <input autocomplete="off" autofocus class="form-control" name="symbol" placeholder="Symbol" id="symbol" type="text">
     </div>
     <div id="data-container" class="mt-3">
-        <p>Your budget: $<span id="budget-container">{{ cash }}</span></p>
+        <p class="font-weight-bolder">Your budget</p>
+        <p>$<span id="budget-container">{{ "{:.2f}".format(cash) }}</span></p>
         <form action="/buy" method="POST">
             <p class="title animated bounceInLeft">Purchase information</p>
             <label class="btn btn-secondary w-75">Name</label>
-            <p id="name-container"></p>
+            <p id="name-container">-</p>
             <label class="btn btn-secondary w-75">Price</label>
-            <p>$<span id="price-container"></span></p>
+            <p>$<span id="price-container">0.00</span></p>
             <label class="btn btn-secondary w-75">Symbol</label>
-            <p id="symbol-container"><p>
+            <p id="symbol-container">-<p>
             <input type="text" class="d-none" name="stock_id" id="stock_id">
             <label class="btn btn-secondary w-75">Shares</label>
             <p class="error-message" id="shares-error"></p>

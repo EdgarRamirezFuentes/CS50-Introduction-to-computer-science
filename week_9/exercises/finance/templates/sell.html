@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block scripts %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="./static/scripts/sell.js"></script>
+{% endblock %}
+
+{% block main %}
+    <!--<p class="title animated bounceInLeft">Sell</p>-->
+    <div id="data-container" class="mt-3">
+        <form action="/sell" method="POST">
+            <p class="title animated bounceInLeft">Sale information</p>
+            <label class="btn btn-secondary w-75">Symbol</label>
+            <select class="custom-select w-75 mb-3" id="symbol" name="symbol">
+                <option selected value="">Choose an option...</option>
+                {% for stock in stocks %}
+                    <option value="{{ stock.symbol }}">{{ stock.symbol  }}</option>
+                {% endfor %}
+            </select>
+            <label class="btn btn-secondary w-75">Name</label>
+            <p id="name-container">-</p>
+            <label class="btn btn-secondary w-75">Price</label>
+            <p>$<span id="price-container">0.00</span></p>
+            <label class="btn btn-secondary w-75">Shares</label>
+            <p>Your owned shares are: <span id="owned-shares">0</span></p>
+            <p class="error-message" id="shares-error"></p>
+            <div class="input-group mb-3 d-flex justify-content-center">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="add-button">+</span>
+                </div>
+                <input id="shares" name="shares" type="text" class="form-control shares-input" maxlength="3" placeholder="Shares" aria-label="Shares" value="1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="subs-button">-</span>
+                </div>
+            </div>
+            <label class="btn btn-secondary w-75">Total</label>
+            <p>$<span id="total">0.00</span></p>
+            <button class="btn btn-primary w-50 mt-2" type="submit" id="sell-button">Sell now!</button>
+        </form>
+    </div>
+{% endblock %}

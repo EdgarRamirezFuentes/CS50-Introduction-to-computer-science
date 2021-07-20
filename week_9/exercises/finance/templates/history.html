@@ -4,7 +4,9 @@
     History
 {% endblock %}
 
-{% block scripts %}{% endblock %}
+{% block scripts %}
+
+{% endblock %}
 
 {% block main %}
     <p class="title animated bounceInLeft">Your stocks</p>
@@ -26,22 +28,22 @@
                         {% for h in history %}
                             <tr>
                                 <td scope="row">{{ h.stock_id }}</td>
-                                <td>{{ "{:.2f}".format(h.price) }}</td>
+                                <td>${{ "{:.2f}".format(h.price) }}</td>
                                 <td>{{ h.shares }}</td>
-                                <td>{{ "{:.2f}".format(h.price * h.shares)  }}</td>
+                                <td>${{ "{:.2f}".format(h.price * h.shares)  }}</td>
                                 <td>{{ h.date }}</td>
                                 <td>{{ h.type }}</td>
                             </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
+                      </tbody>
+                    </table>
             </div>
             <div class="d-lg-none">
                 {% for h in history %}
-                    <button class="btn btn-primary dropdown-toggle w-100 my-2" type="button" data-toggle="collapse" data-target="#{{ h.stock_id }}" aria-expanded="false" aria-controls="{{ h.stock_id }}">
+                    <button class="btn btn-secondary dropdown-toggle w-100 my-2" type="button" data-toggle="collapse" data-target="#{{ h.stock_id }}{{ h.id }}" aria-expanded="false" aria-controls="{{ h.stock_id }}{{ h.id }}">
                         Symbol: {{ h.stock_id }} || Date: {{ h.date }}
                     </button>
-                    <div class="collapse" id="{{ h.stock_id }}">
+                    <div class="collapse" id="{{ h.stock_id }}{{ h.id }}">
                         <div class="card card-body">
                             <p class="border-bottom border-dark w-100">Price: ${{ "{:.2f}".format(h.price) }}</p>
                             <p class="border-bottom border-dark w-100">Shares: {{ h.shares }}</p>

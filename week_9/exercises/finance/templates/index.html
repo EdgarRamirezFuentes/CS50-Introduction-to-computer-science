@@ -10,7 +10,7 @@
 
 {% block main %}
     <p class="title animated bounceInLeft">Your stocks</p>
-    <div class="container">
+    <div class="container-fluid">
         <div class"row">
             <div class="col-12 d-none d-lg-block">
                 <table class="table">
@@ -38,7 +38,7 @@
             </div>
             <div class="d-lg-none">
                 {% for stock in stocks %}
-                    <button class="btn btn-primary dropdown-toggle w-75 my-2" type="button" data-toggle="collapse" data-target="#{{ stock.symbol }}" aria-expanded="false" aria-controls="{{ stock.symbol }}">
+                    <button class="btn btn-secondary dropdown-toggle w-75 my-2" type="button" data-toggle="collapse" data-target="#{{ stock.symbol }}" aria-expanded="false" aria-controls="{{ stock.symbol }}">
                         {{ stock.name }}
                     </button>
                     <div class="collapse" id="{{ stock.symbol }}">
@@ -60,7 +60,7 @@
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">Stocks' total value</th>
+                            <th scope="col">Stocks' value</th>
                             <th scope="col">Cash</th>
                             <th scope="col">Grand total</th>
                         </tr>

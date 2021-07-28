@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{%block description %}This page is used to login and get access to your personal task manager{% endblock %}
+
+{% block stylesheets %}
+<link href="/static/css/login.css" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="row">
+        <div class="d-flex justify-content-center my-5">
+            <form class="d-flex align-items-center flex-column text-center animated bounceIn">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" aria-describedby="username" placeholder="username">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="password">
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

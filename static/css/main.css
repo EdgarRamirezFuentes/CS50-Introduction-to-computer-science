@@ -1,3 +1,25 @@
 body {
     font-family: 'Merriweather', serif;
 }
+
+/* Create a custom title */
+.title {
+    margin: 20px 0;
+    font-size: 30px;
+    border-bottom: #000000;
+    border-width: 0 0 1.5px 0;
+    border-style: solid;
+    font-weight: lighter;
+}
+
+@media screen and (max-width: 600px) {
+    .title {
+        margin-top: 25px;
+    }
+}
+
+.error_message {
+    color: #F00;
+    font-size: small;
+    font-style: italic;
+}

@@ -1,4 +1,4 @@
-import {is_valid_registration_data} from "./validations"
+import {is_valid_registration_data} from "./validations.js"
 
 document.addEventListener("DOMContentLoaded", (e) => {
     const username_input = document.getElementById("username");
@@ -17,14 +17,13 @@ document.addEventListener("DOMContentLoaded", (e) => {
         const email = email_input.value.trim();
         const password = password_input.value.trim();
         const confirmation = confirmation_input.value.trim();
-
-        if (!is_valid_registration_data(
+        e.preventDefault();
+        console.log("hola");
+        console.log(is_valid_registration_data(
                 username, username_error_container, 
                 email, email_error_container,
                 password, password_error_container, 
                 confirmation, confirmation_error_container
-        )) {
-            e.preventDefault();
-        }
+        ));
     }); 
 });

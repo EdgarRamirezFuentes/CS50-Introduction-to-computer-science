@@ -26,19 +26,84 @@ function is_valid_registration_data(
     password, password_error_container, 
     confirmation, confirmation_error_container
 ) {
+    const valid_username = is_valid_username(username);
+    const valid_password = is_valid_password(password);
+    const valid_email = is_valid_email(email);
+    const valid_confirmation = password == confirmation ? true : false;
 
+    // Username messages
+    if (!username.length) {
+        username_error_container.innerHTML = "This field is required";
+    } else if (!valid_username) {
+        username_error_container.innerHTML = "Input a valid username";
+    } else {
+        username_error_container.innerHTML = "";
+    }
+
+    // Password messages
+    if (!password.length) {
+        password_error_container.innerHTML = "This field is required";
+    } else if (!valid_password) {
+        password_error_container.innerHTML = "Input a valid password";
+    } else {
+        password_error_container.innerHTML = "";
+    }
+
+    // Note: The email is not required at all
+    if (email.length && !valid_email) { 
+        email_error_container = "Input a valid email";
+    } else {
+        email_error_container.innerHTML = "";
+    }
+
+    // Confirmation messages
+    if (!confirmation.length) {
+        confirmation_error_container.innerHTML = "This field is required"
+    } else if (!valid_confirmation) {
+        confirmation_error_container.innerHTML = "The confirmation does not match the password"
+    } else {
+        confirmation_error_container.innerHTML = "";
+    }
+
+    return valid_username && valid_password && valid_email && valid_password;
 }
 
+/**
+ * Check if the provided username is valid
+ * @param {string} username is the username that the user input
+ * @return {boolean} true if the username is valid, otherwise return false
+ */
 function is_valid_username(username) {
-
+    // Username requirements
+    // - Only accept alphanumeric characters
+    // - The first letter must be a letter
+    // - The length of the username must be between 4 to 16 characters
+    const username_re = /^[a-z][a-z0-9]{3,15}$/gi
+    return username_re.test(username);
 }
 
+/**
+ * Check if the provided email is valid
+ * @param {string} email is the email that the user input
+ * @return {bool} true iif the email is valid, otherwise return false
+ */ 
 function is_valid_email(email) {
-
+    // Regex source: https://www.abstractapi.com/tools/email-regex-guide
+    const email_re = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return  email_re.test(email);
 }
 
-function is_valid_password(password, confirmation) {
-
+/**
+ * Check if the provided password is valid
+ * @param {string} password is the password that the user input
+ * @return {boolean} true if the password is valid, otherwise false
+ */
+function is_valid_password(password) {  
+    // Password requirements
+    // - Only accepts alphanumeric characters
+    // - The length of the username must be between 8 to 20 characters
+    const password_re =/^[a-z0-9]{8,20}$/gi;
+    return password_re.test(password);
 }
 
 export {

@@ -8,13 +8,17 @@
 <link href="/static/css/register.css" rel="stylesheet">
 {% endblock %}
 
+{% block scripts %}
+<script type="module" src="/static/js/register.js"></script>
+{% endblock %}
+
 {% block main %}
 <div class="container">
     <div class="row">
         <div class="d-flex justify-content-center p-5 mb-5">
-            <form class="d-flex align-items-center flex-column text-center animated bounceIn">
+            <form method="POST" class="d-flex align-items-center flex-column text-center animated bounceIn">
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label">Username</label><span class="error_message"> * required</span>
                     <p id="username_error" class="error_message"></p>
                     <input type="text" class="form-control" id="username" name="username" aria-describedby="username" placeholder="username">
                 </div>
@@ -24,16 +28,16 @@
                     <input type="email" class="form-control" id="email" name="email" aria-describedby="email" placeholder="email">
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">Password</label><span class="error_message"> * required</span>
                     <p id="password_error" class="error_message"></p>
                     <input type="password" class="form-control" id="password" name="password" placeholder="password">
                 </div>
                 <div class="mb-3">
-                    <label for="confirm_password" class="form-label">Confirm password</label>
+                    <label for="confirm_password" class="form-label">Confirm password</label><span class="error_message"> * required</span>
                     <p id="confirmation_error" class="error_message"></p>
-                    <input type="password" class="form-control" id="confirm_password" name="confirmation" aria-describedby="confirm_password" placeholder="confirm your password">
+                    <input type="password" class="form-control" id="confirmation" name="confirmation" aria-describedby="confirm_password" placeholder="confirm your password">
                 </div>
-                <button type="submit" class="btn btn-primary my-3" id="register_button">Register</button>
+                <button type="button" class="btn btn-primary my-3" id="register_button">Register</button>
             </form>
         </div>
     </div>

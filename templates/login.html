@@ -8,24 +8,29 @@
 <link href="/static/css/login.css" rel="stylesheet">
 {% endblock %}
 
+{% block scripts %}
+<script type="module" src="/static/js/login.js"></script>
+{% endblock %}
 {% block main %}
 <div class="container">
     <div class="row">
         <div class="d-flex justify-content-center my-5">
-            <form class="d-flex align-items-center flex-column text-center animated bounceIn">
+            <form method="POST" class="d-flex align-items-center flex-column text-center animated bounceIn">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
+                    <p id="username_error" class="error_message"></p>
                     <input type="text" class="form-control" id="username" aria-describedby="username" placeholder="username">
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
+                    <p id="password_error" class="error_message"></p>
                     <input type="password" class="form-control" id="password" placeholder="password">
                 </div>
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    <input type="checkbox" class="form-check-input" id="remember">
+                    <label class="form-check-label" for="remember">Remember me</label>
                 </div>
-                <button type="submit" class="btn btn-primary">Log in</button>
+                <button type="submit" id="login_button" class="btn btn-primary">Log in</button>
             </form>
         </div>
     </div>

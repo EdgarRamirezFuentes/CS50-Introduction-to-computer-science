@@ -1,0 +1,12 @@
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Error!
+{% endblock %}
+
+{% block description %}This page is shown when something went wrong{% endblock %}
+
+{% block main %}
+    <img class="mb-3" alt="error!" class="border" src="https://api.memegen.link/images/fine/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg" title="{{ top }}">
+{% endblock %}

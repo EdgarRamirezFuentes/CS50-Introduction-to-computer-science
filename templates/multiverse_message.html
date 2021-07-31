@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Multiverse!
+{% endblock %}
+
+{% block description %}This page is shown when the username or email provided is already registered{% endblock %}
+
+{% block main %}
+    <p class="title animated bounceInLeft text-center">You're saying there's a multiverse?</p>
+    <p>Your account was not created, because... Well, the meme explains it so much better.</p>
+    <img alt="multiverse" class="border" src="https://api.memegen.link/images/spiderman/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg" title="repeated username">
+{% endblock %}

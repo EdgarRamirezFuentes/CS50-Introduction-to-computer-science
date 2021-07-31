@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Success message
+{% endblock %}
+
+{% block description %}This page is shown when something went successfully!{% endblock %}
+
+{% block main %}
+    <p class="title animated bounceInLeft text-center">Let's celebrate!</p>
+    <img alt="success" class="border" src="https://api.memegen.link/images/happening/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg" title="shares">
+{% endblock %}

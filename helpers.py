@@ -18,8 +18,13 @@ def escape(s):
         return s
 
 def error_message(message, code=400, username=""):
-    return render_template("error.html", top=code, bottom=escape(message), username=username), code
+    return render_template("error_message.html", top=code, bottom=escape(message), username=username), code
 
+def multiverse_message(message1, message2, username=""):
+    return render_template("multiverse_message.html", top=escape(message1), bottom=escape(message2) , username=username)
+
+def success_message(message1, message2, username=""):
+    return render_template("success_message.html", top=escape(message1), bottom=escape(message2) , username=username)
 
 def login_required(f):
     """

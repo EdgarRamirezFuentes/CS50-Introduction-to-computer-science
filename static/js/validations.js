@@ -28,7 +28,7 @@ function is_valid_registration_data(
 ) {
     const valid_username = is_valid_username(username);
     const valid_password = is_valid_password(password);
-    const valid_email = is_valid_email(email);
+    const valid_email = email.length ? is_valid_email(email) : true;
     const valid_confirmation = password == confirmation ? true : false;
 
     // Username messages
@@ -77,8 +77,8 @@ function is_valid_username(username) {
     // Username requirements
     // - Only accept alphanumeric characters
     // - The first letter must be a letter
-    // - The length of the username must be between 4 to 16 characters
-    const username_re = /^[a-z][a-z0-9]{3,15}$/gi
+    // - The length of the username must be between 6 to 16 characters
+    const username_re = /^[a-z][a-z0-9]{5,15}$/gi
     return username_re.test(username);
 }
 

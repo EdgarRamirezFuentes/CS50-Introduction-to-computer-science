@@ -17,13 +17,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
         const email = email_input.value.trim();
         const password = password_input.value.trim();
         const confirmation = confirmation_input.value.trim();
-        e.preventDefault();
-        console.log("hola");
-        console.log(is_valid_registration_data(
+        
+        if(!is_valid_registration_data(
                 username, username_error_container, 
                 email, email_error_container,
                 password, password_error_container, 
                 confirmation, confirmation_error_container
-        ));
+        )) {
+            e.preventDefault();
+        }
     }); 
 });

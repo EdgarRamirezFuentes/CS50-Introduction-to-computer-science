@@ -5,11 +5,12 @@ from flask import Flask, flash, redirect, render_template, request, session, jso
 from flask_session import Session
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import error_message, login_required, multiverse_message, success_message
+from helpers import error_message, login_required, logout_required, multiverse_message, success_message
 
 app = Flask(__name__)
 
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config['SECRET_KEY'] = "Seraphine"  
 
 # Ensure responses aren't cached
 @app.after_request
@@ -25,10 +26,20 @@ db = SQL("sqlite:///task_manager.db")
 @app.route("/")
 @login_required
 def index():
-    pass    
+    user_data = db.execute("SELECT username, email FROM users WHERE id = ?", session["user_id"])
+    username = user_data[0]["username"]
+    email = user_data[0]["email"]
+    return render_template("index.html", username=username, email=email)
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
 
 
 @app.route("/register", methods=["GET", "POST"])
+@logout_required
 def register():
     if request.method == "GET":
         return render_template("register.html")
@@ -90,10 +101,34 @@ def register():
                         username, generate_password_hash(password))
         return success_message("Welcome!", "Your account was created successfully!")
 
+
 @app.route("/login", methods=["GET", "POST"])
+@logout_required
 def login():
     if request.method == "GET":
         return render_template("login.html")
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+    
+    if not username:
+        return error_message("You must provide a username")
+    if not password:
+        return error_message("You must provide a password")
+    
+    username = username.strip()
+    password = password.strip()
+    
+    user_credentials = db.execute("SELECT id, pass FROM users WHERE username = ?", username)
+    
+    if not user_credentials :
+        return error_message("Incorrect username")
+
+    if not check_password_hash(user_credentials[0]["pass"], password):
+        return error_message("Incorrect password")
+    
+    session["user_id"] = user_credentials[0]["id"]
+    return redirect("/") 
 
 
 def errorhandler(e):

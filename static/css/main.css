@@ -2,6 +2,21 @@ body {
     font-family: 'Merriweather', serif;
 }
 
+main
+{
+    /* Scroll horizontally as needed */
+    overflow-x: auto;
+
+    /* Center contents */
+    text-align: center;
+}
+
+main img
+{
+    /* Constrain images on small screens */
+    max-width: 100%;
+}
+
 /* Create a custom title */
 .title {
     margin: 20px 0;

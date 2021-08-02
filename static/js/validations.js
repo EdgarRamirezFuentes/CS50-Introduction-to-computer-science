@@ -106,6 +106,40 @@ function is_valid_password(password) {
     return password_re.test(password);
 }
 
+/**
+ * Check if all the field in the registration form are valid
+ * @param {string} title is the title that the user input
+ * @param {HTMLElement} title_error_container is the container where the
+ *                      error messages regarding to the title input will be
+ *                      displayed.
+ * @param {string} description is the description that the user input
+ * @param {HTMLElement} description_error_container is the container where the
+ *                      error messages regarding to the description input will be
+ *                      displayed.
+ * @return {boolean} true if the data is valid, otherwise return false
+ */ 
+
+function is_valid_task_data(
+    title, title_error_container,
+    description, description_error_container
+) {
+    let valid_data = true;
+    if (!title.length) {
+        title_error_container.innerHTML = "This field is required";
+        valid_data = false;
+    }
+    if (title.length > 50) {
+        title_error_container.innerHTML = "The max length of this field is 50 characters";
+        valid_data = false;
+    } 
+    if (description.length > 100) {
+        description_error_container.innerHTML = "The max length of this field is 100 characters";
+        valid_data = false;
+    } 
+    return valid_data;
+}
+
 export {
     is_valid_registration_data, 
+    is_valid_task_data
 };

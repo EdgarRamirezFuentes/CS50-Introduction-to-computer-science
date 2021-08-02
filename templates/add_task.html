@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}Add task{% endblock %}
+
+{% block description %}This page is used to a new task{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/static/css/add_task.css">
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="/static/js/add_task.js"></script>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="d-flex justify-content-center p-5 mb-5">
+                <form action="/add-task" method="POST" class="d-flex align-items-center flex-column text-center animated bounceIn">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label><span class="error_message"> * required</span>
+                        <p id="title_error" class="error_message"></p>
+                        <input type="text" class="form-control" id="title" name="title" aria-describedby="title" placeholder="title">
+                        <p class="text-end w-100"><span id="title_length">0</span>/50</p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="end_date" class="form-label">End date</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <p id="description_error" class="error_message"></p>
+                        <textarea type="description" class="form-control" id="description" name="description" aria-describedby="description" placeholder="description"></textarea>
+                        <p class="text-end w-100"><span id="description_length">0</span>/100</p>
+                    </div>
+                    <button type="submit" class="btn btn-primary my-3" id="add_task_button">Add task</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

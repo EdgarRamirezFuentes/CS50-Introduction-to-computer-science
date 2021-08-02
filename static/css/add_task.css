@@ -1,0 +1,19 @@
+body{
+    background: url(../img/add_task.jpeg) no-repeat center center fixed;
+    background-size: cover;
+}
+
+form {
+    border-radius: .25rem;
+    background: rgba(255, 255, 255, 0.795);
+    padding: 30px;
+}
+
+.form-control {
+    background-color: rgba(209, 209, 209, 0.623)!important;
+    color: #FFF;
+}
+
+textarea {
+    max-height: 220px;
+}

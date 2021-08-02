@@ -33,6 +33,7 @@ def index():
 
 
 @app.route("/logout")
+@login_required
 def logout():
     session.clear()
     return redirect("/")
@@ -93,12 +94,8 @@ def register():
             if existant_email and existant_email == email:
                 return multiverse_message("You", "Someone using the same email")
         
-        if email:
-            db.execute("INSERT INTO users (username, pass, email) VALUES (?, ?, ?)", 
+        db.execute("INSERT INTO users (username, pass, email) VALUES (?, ?, ?)", 
                         username, generate_password_hash(password), email)
-        else:
-            db.execute("INSERT INTO users (username, pass) VALUES (?, ?)", 
-                        username, generate_password_hash(password))
         return success_message("Welcome!", "Your account was created successfully!")
 
 
@@ -129,6 +126,43 @@ def login():
     
     session["user_id"] = user_credentials[0]["id"]
     return redirect("/") 
+
+
+@app.route("/add-task", methods=["GET", "POST"])
+@login_required
+def add_task():
+    if request.method == "GET":
+        return render_template("add_task.html")
+    if request.method == "POST":
+        title = request.form.get("title")
+        end_date = request.form.get("end_date")
+        description = request.form.get("description")
+        
+        if not title:
+            return error_message("You must provide a title")
+        if len(title) > 50:
+            return error_message("The max length of the title is 50")
+        if description and len(description) > 100:
+            return error_message("The max length of the title is 100")
+        
+        db.execute("INSERT INTO tasks (username_id, title, description, ending_date) VALUES(?, ?, ?, ?)",
+                    session["user_id"], title, description, end_date)
+        return success_message("Great!", "Task added successfully")
+    return ("/")
+
+
+@app.route("/calendar")
+@login_required
+def calendar():
+    return render_template("calendar.html")
+
+
+@app.route("/get-tasks")
+@login_required
+def get_tasks():
+    tasks = db.execute("SELECT title, starting_date AS start, ending_date AS end, description from tasks WHERE username_id = ?",
+                        session["user_id"])
+    return jsonify(tasks)
 
 
 def errorhandler(e):

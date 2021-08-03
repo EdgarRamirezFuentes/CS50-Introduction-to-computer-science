@@ -1,5 +1,70 @@
 {% extends "layout.html" %}
-
+{% block title %}Home{% endblock %}
 {% block main %}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Starting date</th>
+            <th scope="col">Ending date</th>
+            <th scope="col">Description</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in  tasks %}
+        <form action="/delete-task" method="POST">
+            <input type="text" name="task_id" class="d-none" id="{{ task.id }}" value="{{ task.id }}">
+            <tr class="{% if not task.status %} table-danger {% endif %}">
+                <th scope="row">{{ task.id }}</th>
+                <td>{{ task.title }}</td>
+                <td>{{ task.starting_date }}</td>
+                {% if task.ending_date %}
+                <td>{{ task.ending_date }}</td>
+                {% else %}
+                <td>-</td>
+                {% endif %}
+                <td>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Description
+                    </button>
 
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">{{task.title}}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {% if task.description %}
+                                        <p>{{task.description}}</p>
+                                    {% else %}
+                                        <p>There is no description</p>
+                                    {% endif %}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                {% if task.status %}
+                    <td>In time</td>
+                {% else %}
+                    <td>Expired</td>
+                {% endif %}
+                <td><button class="btn btn-danger" type="submit">Delete</button></td>
+            </tr>
+        </form>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

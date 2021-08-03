@@ -1,5 +1,7 @@
 import re
 import os
+import math
+import datetime
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, jsonify
 from flask_session import Session
@@ -26,10 +28,18 @@ db = SQL("sqlite:///task_manager.db")
 @app.route("/")
 @login_required
 def index():
-    user_data = db.execute("SELECT username, email FROM users WHERE id = ?", session["user_id"])
-    username = user_data[0]["username"]
-    email = user_data[0]["email"]
-    return render_template("index.html", username=username, email=email)
+    username = db.execute("SELECT username FROM users WHERE id = ?", session["user_id"])[0]["username"]
+    tasks = db.execute("SELECT id, title, description, starting_date, ending_date FROM tasks WHERE username_id = ? ORDER BY ending_date NULLS LAST, starting_date;", session["user_id"])
+    for task in tasks:
+        ending_date = task["ending_date"]
+        task["status"] = True
+        if ending_date:
+            ending_date = ending_date.split("-")
+            ending_date_format = datetime.datetime(int(ending_date[0]), int(ending_date[1]), int(ending_date[2]))
+            current_date = datetime.datetime.now()
+            task["status"] = True if ((ending_date_format - current_date).days >= 0) else False
+            
+    return render_template("index.html", username=username, tasks=tasks)
 
 
 @app.route("/logout")
@@ -146,7 +156,7 @@ def add_task():
             return error_message("The max length of the title is 100")
         
         db.execute("INSERT INTO tasks (username_id, title, description, ending_date) VALUES(?, ?, ?, ?)",
-                    session["user_id"], title, description, end_date)
+                    session["user_id"], title, description, end_date if end_date else None)
         return success_message("Great!", "Task added successfully")
     return ("/")
 
@@ -164,6 +174,16 @@ def get_tasks():
                         session["user_id"])
     return jsonify(tasks)
 
+
+@app.route("/delete-task", methods=["POST"])
+def delete_task():
+    if request.method == "POST":
+        task_id = request.form.get("task_id")
+        if not task_id:
+            return error_message("You must provide a task id")
+        db.execute("DELETE FROM tasks WHERE id = ?", task_id)
+    return redirect("/")
+    
 
 def errorhandler(e):
     """Handle error"""

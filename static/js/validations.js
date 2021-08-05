@@ -48,10 +48,9 @@ function is_valid_registration_data(
     } else {
         password_error_container.innerHTML = "";
     }
-
     // Note: The email is not required at all
     if (email.length && !valid_email) { 
-        email_error_container = "Input a valid email";
+        email_error_container.innerHTML = "Input a valid email";
     } else {
         email_error_container.innerHTML = "";
     }
@@ -65,7 +64,7 @@ function is_valid_registration_data(
         confirmation_error_container.innerHTML = "";
     }
 
-    return valid_username && valid_password && valid_email && valid_password;
+    return valid_username && valid_password && valid_email && valid_confirmation;
 }
 
 /**

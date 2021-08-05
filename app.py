@@ -12,7 +12,7 @@ from helpers import error_message, login_required, logout_required, multiverse_m
 app = Flask(__name__)
 
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config['SECRET_KEY'] = "Seraphine"  
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")  
 
 # Ensure responses aren't cached
 @app.after_request
@@ -176,6 +176,7 @@ def get_tasks():
 
 
 @app.route("/delete-task", methods=["POST"])
+@login_required
 def delete_task():
     if request.method == "POST":
         task_id = request.form.get("task_id")
@@ -184,7 +185,33 @@ def delete_task():
         db.execute("DELETE FROM tasks WHERE id = ?", task_id)
     return redirect("/")
     
-
+@app.route("/change-password", methods=["GET", "POST"])
+@login_required
+def change_password():
+    if request.method == "GET":
+        return render_template("change_password.html")
+    if request.method == "POST":
+        current_password = request.form.get("current_password").strip()
+        new_password = request.form.get("new_password").strip()
+        confirmation = request.form.get("confirmation").strip()
+        if not current_password: 
+            return error_message("You must provide your current password")
+        if not new_password: 
+            return error_message("You must provide your current password")
+        if not confirmation: 
+            return error_message("You must provide your confirmation password")
+        user_password = db.execute("SELECT pass FROM users WHERE id = ?", session["user_id"])[0]["pass"]
+        if not check_password_hash(user_password, current_password):
+            return error_message("Your current password is not correct")
+        password_re = "^[a-z0-9]{8,20}$"
+        if not re.fullmatch(password_re, new_password, flags=re.IGNORECASE):
+            return error_message("You must provide a valid password")
+        if new_password != confirmation:
+            return error_message("The confirmation does not match your password")
+        db.execute("UPDATE users SET pass = ? WHERE id = ?", generate_password_hash(new_password), session["user_id"])
+        return success_message("Your password was changed", "successfully")
+    
+    
 def errorhandler(e):
     """Handle error"""
     if not isinstance(e, HTTPException):

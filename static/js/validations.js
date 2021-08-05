@@ -58,9 +58,9 @@ function is_valid_registration_data(
 
     // Confirmation messages
     if (!confirmation.length) {
-        confirmation_error_container.innerHTML = "This field is required"
+        confirmation_error_container.innerHTML = "This field is required";
     } else if (!valid_confirmation) {
-        confirmation_error_container.innerHTML = "The confirmation does not match the password"
+        confirmation_error_container.innerHTML = "The confirmation does not match the password";
     } else {
         confirmation_error_container.innerHTML = "";
     }
@@ -127,19 +127,62 @@ function is_valid_task_data(
     if (!title.length) {
         title_error_container.innerHTML = "This field is required";
         valid_data = false;
+    } else {
+        title_error_container.innerHTML = "";
     }
+
     if (title.length > 50) {
         title_error_container.innerHTML = "The max length of this field is 50 characters";
         valid_data = false;
+    } else {
+        title_error_container.innerHTML = "";
     } 
+
     if (description.length > 100) {
         description_error_container.innerHTML = "The max length of this field is 100 characters";
         valid_data = false;
-    } 
+    } else {
+        description_error_container.innerHTML = "";
+    }
     return valid_data;
 }
 
+function is_valid_change_password(
+    current_password, current_password_error_container,
+    new_password, new_password_error_container,
+    confirmation, confirmation_error_container
+) {
+    let valid_data = true;
+    if (!current_password.length) {
+        current_password_error_container.innerHTML = "This field is required";
+        valid_data = false;
+    } else {
+        current_password_error_container.innerHTML = "";
+    }
+
+    if (!new_password.length) {
+        new_password_error_container.innerHTML = "This field is required";
+        valid_data = false;
+    } else if (!is_valid_password(new_password)) {
+        new_password_error_container.innerHTML = "Input a valid new password";
+        valid_data = false;
+    } else {
+        new_password_error_container.innerHTML = "";
+    }
+
+    if (!confirmation.length) {
+        confirmation_error_container.innerHTML = "This field is required";
+        valid_data = false;
+    } else if (new_password != confirmation) {
+        confirmation_error_container.innerHTML = "The confirmation does not match the new password";
+        valid_data = false;
+    } else {
+        confirmation_error_container.innerHTML = "";
+    }
+    return valid_data;
+}
 export {
     is_valid_registration_data, 
-    is_valid_task_data
+    is_valid_task_data,
+    is_valid_change_password
 };
